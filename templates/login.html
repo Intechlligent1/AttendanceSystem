@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-100">
+  <div class="bg-white p-6 rounded shadow-md w-96 space-y-4 text-center">
+    <img src="/static/kpt.png" alt="Kaduna Polytechnic Logo" class="w-20 mx-auto mb-2" />
+    <h1 class="text-lg font-bold text-gray-700">Kaduna Polytechnic</h1>
+    <h2 class="text-sm text-gray-500 mb-4">Mechatronics Engineering Department</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="space-y-2">
+          {% for category, message in messages %}
+            <div class="text-sm px-4 py-2 rounded {{ 'bg-red-100 text-red-700' if category == 'error' else 'bg-green-100 text-green-700' }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" class="space-y-3">
+      <input name="username" placeholder="Username" class="w-full border p-2 rounded" required>
+      <input name="password" type="password" placeholder="Password" class="w-full border p-2 rounded" required>
+      <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Login</button>
+    </form>
+  </div>
+</body>
+</html>
