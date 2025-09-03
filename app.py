@@ -72,6 +72,54 @@ def add_student():
             return redirect(url_for('add_student'))
     return render_template('add_student.html')
 
+@app.route('/students')
+def students():
+    if 'logged_in' not in session:
+        return redirect(url_for('login'))
+    db = get_db()
+    all_students = db.execute("SELECT * FROM students ORDER BY id DESC").fetchall()
+    return render_template('students.html', students=all_students)
+
+
+@app.route('/edit-student/<int:id>', methods=['GET', 'POST'])
+def edit_student(id):
+    if 'logged_in' not in session:
+        return redirect(url_for('login'))
+
+    db = get_db()
+    student = db.execute("SELECT * FROM students WHERE id = ?", (id,)).fetchone()
+
+    if not student:
+        flash("Student not found", "error")
+        return redirect(url_for('students'))
+
+    if request.method == 'POST':
+        name = request.form['name']
+        card_id = request.form['card_id'].upper()
+
+        try:
+            db.execute("UPDATE students SET name = ?, card_id = ? WHERE id = ?", (name, card_id, id))
+            db.commit()
+            flash("Student updated successfully.", "success")
+            return redirect(url_for('students'))
+        except sqlite3.IntegrityError:
+            flash("Card ID already exists!", "error")
+            return redirect(url_for('edit_student', id=id))
+
+    return render_template('edit_student.html', student=student)
+
+
+@app.route('/delete-student/<int:id>', methods=['POST'])
+def delete_student(id):
+    if 'logged_in' not in session:
+        return redirect(url_for('login'))
+
+    with get_db() as db:
+        db.execute("DELETE FROM students WHERE id = ?", (id,))
+    flash("Student deleted successfully.", "success")
+    return redirect(url_for('students'))
+
+
 @app.route('/attendance')
 def view_attendance():
     if 'logged_in' not in session:
