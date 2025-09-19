@@ -23,6 +23,7 @@ with get_db() as db:
             name TEXT,
             card_id TEXT UNIQUE
         )
+               
     """)
     db.execute("""
         CREATE TABLE IF NOT EXISTS attendance (
@@ -143,6 +144,7 @@ def api_attendance():
     student = db.execute("SELECT * FROM students WHERE card_id = ?", (card_id,)).fetchone()
     if student:
         db.execute("INSERT INTO attendance (student_id, timestamp) VALUES (?, ?)", (student['id'], timestamp))
+        db.commit()
         return jsonify({
             "status": "success",
             "message": "Attendance recorded",
@@ -150,7 +152,13 @@ def api_attendance():
             "timestamp": timestamp
         })
     else:
-        return jsonify({"status": "error", "message": "Card not registered"}), 404
+        # New: return card UID so ESP32 can show it
+        return jsonify({
+            "status": "error",
+            "message": "Card not registered",
+            "card_id": card_id
+        }), 404
+
 
 @app.route('/export')
 def export_csv():
