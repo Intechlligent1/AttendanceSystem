@@ -142,7 +142,6 @@ def users():
         filter_type = 'staff'
     elif request.path.endswith('/students'):
         filter_type = 'student'
-
     if filter_type:
         all_users = db.execute(
             "SELECT * FROM users WHERE user_type = ? ORDER BY id DESC",
@@ -162,6 +161,16 @@ def edit_user(id):
 
     db = get_db()
     user = db.execute("SELECT * FROM users WHERE id = ?", (id,)).fetchone()
+    if not user and table_exists(db, "staff"):
+        user = db.execute(
+            "SELECT id, name, card_id, COALESCE(NULLIF(user_type, ''), 'staff') AS user_type FROM staff WHERE id = ?",
+            (id,),
+        ).fetchone()
+    if not user and table_exists(db, "students"):
+        user = db.execute(
+            "SELECT id, name, card_id, 'student' AS user_type FROM students WHERE id = ?",
+            (id,),
+        ).fetchone()
 
     if not user:
         flash("User not found", "error")
@@ -219,6 +228,20 @@ def view_attendance():
         WHERE u.user_type = 'student'
         ORDER BY a.timestamp DESC
     """).fetchall()
+    if not staff_logs and table_exists(db, "staff"):
+        staff_logs = db.execute("""
+            SELECT a.timestamp, s.name, s.card_id, COALESCE(NULLIF(s.user_type, ''), 'staff') AS user_type
+            FROM attendance a
+            JOIN staff s ON a.user_id = s.id
+            ORDER BY a.timestamp DESC
+        """).fetchall()
+    if not student_logs and table_exists(db, "students"):
+        student_logs = db.execute("""
+            SELECT a.timestamp, s.name, s.card_id, 'student' AS user_type
+            FROM attendance a
+            JOIN students s ON a.user_id = s.id
+            ORDER BY a.timestamp DESC
+        """).fetchall()
     staff_count = len(staff_logs)
     student_count = len(student_logs)
     now = datetime.utcnow()
