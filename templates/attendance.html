@@ -39,7 +39,14 @@
       </div>
     </section>
 
-    <section class="overflow-hidden rounded-[2rem] border border-white/70 bg-white/90 shadow-panel">
+    <section class="mb-6 overflow-hidden rounded-[2rem] border border-white/70 bg-white/90 shadow-panel">
+      <div class="border-b border-line px-6 py-5 sm:px-8">
+        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brass">Staff Attendance</p>
+        <div class="mt-2 flex flex-wrap items-end justify-between gap-3">
+          <h2 class="text-2xl font-semibold text-slate">Staff log</h2>
+          <p class="text-4xl font-semibold text-slate">{{ staff_count }}</p>
+        </div>
+      </div>
       <div class="overflow-x-auto">
         <table class="min-w-full">
           <thead class="bg-slate text-left text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
@@ -51,7 +58,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-line text-sm text-slate">
-            {% for log in logs %}
+            {% for log in staff_logs %}
             <tr class="transition hover:bg-sand/60">
               <td class="px-6 py-4 font-semibold">{{ log.name }}</td>
               <td class="px-6 py-4">
@@ -65,7 +72,49 @@
             {% else %}
             <tr>
               <td colspan="4" class="px-6 py-12 text-center text-sm text-slate/65">
-                No attendance records are available for display yet.
+                No staff attendance records are available for display yet.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="overflow-hidden rounded-[2rem] border border-white/70 bg-white/90 shadow-panel">
+      <div class="border-b border-line px-6 py-5 sm:px-8">
+        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-pine">Student Attendance</p>
+        <div class="mt-2 flex flex-wrap items-end justify-between gap-3">
+          <h2 class="text-2xl font-semibold text-slate">Student log</h2>
+          <p class="text-4xl font-semibold text-slate">{{ student_count }}</p>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead class="bg-slate text-left text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
+            <tr>
+              <th class="px-6 py-4">Name</th>
+              <th class="px-6 py-4">Type</th>
+              <th class="px-6 py-4">Card ID</th>
+              <th class="px-6 py-4">Timestamp</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-line text-sm text-slate">
+            {% for log in student_logs %}
+            <tr class="transition hover:bg-sand/60">
+              <td class="px-6 py-4 font-semibold">{{ log.name }}</td>
+              <td class="px-6 py-4">
+                <span class="inline-flex rounded-full bg-cloud px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate">
+                  {{ log.user_type }}
+                </span>
+              </td>
+              <td class="px-6 py-4 font-mono text-xs tracking-[0.18em] text-slate/75">{{ log.card_id }}</td>
+              <td class="px-6 py-4">{{ log.timestamp }}</td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="4" class="px-6 py-12 text-center text-sm text-slate/65">
+                No student attendance records are available for display yet.
               </td>
             </tr>
             {% endfor %}
