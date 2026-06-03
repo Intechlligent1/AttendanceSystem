@@ -1,59 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Attendance Logs</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 text-gray-800 font-sans">
-  <header class="bg-white shadow-sm">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-      <a href="/" class="flex items-center space-x-2">
-        <img src="/static/kpt.png" alt="Logo" class="w-8 h-8" />
-        <span class="font-semibold text-gray-800">Smart Attendance</span>
-      </a>
-      <nav>
-        <a href="/dashboard" class="text-gray-600 hover:text-primary-600 transition">
-          <i class="fas fa-arrow-left mr-1"></i> Back to Dashboard
+{% extends "base.html" %}
+
+{% block title %}Attendance Records | Smart Attendance{% endblock %}
+
+{% block body %}
+<main class="px-4 py-6 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-8xl">
+    <header class="mb-8 flex flex-col gap-4 rounded-[2rem] border border-white/70 bg-white/90 px-6 py-6 shadow-panel sm:flex-row sm:items-center sm:justify-between sm:px-8">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brass">Attendance Archive</p>
+        <h1 class="mt-2 text-3xl font-semibold text-slate">Staff attendance records</h1>
+        <p class="mt-2 text-sm leading-6 text-slate/70">Review historical scans and export monthly attendance data for reporting.</p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a href="/dashboard" class="inline-flex items-center justify-center rounded-2xl border border-line bg-cloud px-5 py-3 text-sm font-semibold text-slate transition hover:bg-white">
+          Dashboard
         </a>
-      </nav>
-    </div>
-  </header>
-  <div class="max-w-6xl mx-auto p-6">
-    <div class="text-center mb-6">
-      <img src="/static/kpt.png" alt="Kaduna Polytechnic Logo" class="w-16 mx-auto mb-2" />
-      <h1 class="text-2xl font-bold">Kaduna Polytechnic</h1>
-      <p class="text-gray-500">Mechatronics Engineering Department</p>
-    </div>
-    
+      </div>
+    </header>
 
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-xl font-semibold">Attendance Records</h2>
-      <a href="/export?month=07&year=2025" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-        ⬇ Export CSV
-      </a>
-    </div>
+    <section class="mb-6 rounded-[2rem] border border-white/70 bg-white/90 p-6 shadow-panel sm:p-8">
+      <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brass">Export Records</p>
+          <h2 class="mt-2 text-2xl font-semibold text-slate">Monthly CSV export</h2>
+          <p class="mt-2 text-sm leading-6 text-slate/70">Choose a period and download the current attendance register.</p>
+        </div>
+        <form action="/export" method="GET" class="grid gap-3 sm:grid-cols-3">
+          <select name="month" class="rounded-2xl border border-line bg-cloud px-4 py-3 text-sm text-slate outline-none transition focus:border-brass focus:bg-white">
+            {% for month_value, month_label in [('01', 'January'), ('02', 'February'), ('03', 'March'), ('04', 'April'), ('05', 'May'), ('06', 'June'), ('07', 'July'), ('08', 'August'), ('09', 'September'), ('10', 'October'), ('11', 'November'), ('12', 'December')] %}
+            <option value="{{ month_value }}" {% if month_value == current_month %}selected{% endif %}>{{ month_label }}</option>
+            {% endfor %}
+          </select>
+          <input type="number" name="year" value="{{ current_year }}" min="2000" max="2100" class="rounded-2xl border border-line bg-cloud px-4 py-3 text-sm text-slate outline-none transition focus:border-brass focus:bg-white">
+          <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-slate px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink">
+            Export CSV
+          </button>
+        </form>
+      </div>
+    </section>
 
-    <div class="overflow-x-auto rounded shadow">
-      <table class="min-w-full bg-white">
-        <thead class="bg-gray-200 text-left">
-          <tr>
-            <th class="py-2 px-4">Name</th>
-            <th class="py-2 px-4">Card ID</th>
-            <th class="py-2 px-4">Timestamp</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200">
-          {% for log in logs %}
-          <tr class="hover:bg-gray-50">
-            <td class="py-2 px-4">{{ log.name }}</td>
-            <td class="py-2 px-4">{{ log.card_id }}</td>
-            <td class="py-2 px-4">{{ log.timestamp }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+    <section class="overflow-hidden rounded-[2rem] border border-white/70 bg-white/90 shadow-panel">
+      <div class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead class="bg-slate text-left text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
+            <tr>
+              <th class="px-6 py-4">Staff Name</th>
+              <th class="px-6 py-4">Card ID</th>
+              <th class="px-6 py-4">Timestamp</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-line text-sm text-slate">
+            {% for log in logs %}
+            <tr class="transition hover:bg-sand/60">
+              <td class="px-6 py-4 font-semibold">{{ log.name }}</td>
+              <td class="px-6 py-4 font-mono text-xs tracking-[0.18em] text-slate/75">{{ log.card_id }}</td>
+              <td class="px-6 py-4">{{ log.timestamp }}</td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="3" class="px-6 py-12 text-center text-sm text-slate/65">
+                No attendance records are available for display yet.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
   </div>
-</body>
-</html>
+</main>
+{% endblock %}

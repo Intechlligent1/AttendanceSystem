@@ -1,63 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Dashboard - Smart Attendance System</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-        },
-      },
-    };
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body class="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 font-sans">
-  <div class="max-w-7xl mx-auto mt-16 p-8 bg-white rounded-2xl shadow-xl transition-all duration-300 hover:shadow-2xl">
-    
-    <div class="text-center mb-8">
-      <img src="/static/kpt.png" alt="Kaduna Polytechnic Logo" class="w-20 mx-auto mb-4" />
-      <h1 class="text-3xl font-bold text-gray-700">Kaduna Polytechnic</h1>
-      <h2 class="text-lg text-gray-500">Mechatronics Engineering Department</h2>
-    </div>
+{% extends "base.html" %}
 
-    <div class="text-center mb-10">
-      <h3 class="text-2xl font-semibold text-gray-800 mb-2">Smart Attendance System Dashboard</h3>
-      <p class="text-sm text-gray-500">Monitor and manage student attendance records efficiently</p>
-    </div>
+{% block title %}Dashboard | Smart Attendance{% endblock %}
 
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-      <div class="bg-blue-50 p-5 rounded-xl shadow text-center">
-        <div class="text-blue-600 text-3xl mb-1">📊</div>
-        <p class="text-sm text-gray-500">Total Attendance Records</p>
-        <p class="text-xl font-bold text-blue-700">{{ total_attendance }}</p>
+{% block body %}
+<main class="px-4 py-6 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-8xl">
+    <header class="mb-8 rounded-[2rem] border border-white/70 bg-white/85 px-6 py-6 shadow-panel backdrop-blur sm:px-8">
+      <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div class="max-w-3xl">
+          <div class="mb-5 flex items-center gap-4">
+            <img src="/static/kpt.png" alt="Kaduna Polytechnic Logo" class="h-14 w-14 rounded-2xl bg-sand p-2 shadow-sm" />
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brass">Kaduna Polytechnic</p>
+              <h1 class="mt-1 text-3xl font-semibold text-slate sm:text-4xl">Staff Attendance Dashboard</h1>
+            </div>
+          </div>
+          <p class="max-w-2xl text-sm leading-7 text-slate/70 sm:text-base">
+            Review staffing activity, register new personnel, and keep attendance records organized through a cleaner administrative surface.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href="/add-staff" class="inline-flex items-center justify-center rounded-2xl bg-slate px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink">
+            Add Staff
+          </a>
+          <a href="/attendance" class="inline-flex items-center justify-center rounded-2xl border border-line bg-white px-5 py-3 text-sm font-semibold text-slate transition hover:border-brass hover:text-ink">
+            Attendance Log
+          </a>
+          <a href="/logout" class="inline-flex items-center justify-center rounded-2xl border border-line bg-cloud px-5 py-3 text-sm font-semibold text-slate transition hover:bg-white">
+            Log Out
+          </a>
+        </div>
       </div>
-      <div class="bg-green-50 p-5 rounded-xl shadow text-center">
-        <div class="text-green-600 text-3xl mb-1">🎓</div>
-        <p class="text-sm text-gray-500">Total Registered Students</p>
-        <p class="text-xl font-bold text-green-700">{{ total_students }}</p>
-      </div>
-    </div>
+    </header>
 
-    <!-- Actions -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-      <a href="/add-student" class="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-xl shadow-md transform hover:scale-105 transition duration-200">
-        ➕ Add Student
-      </a>
-      <a href="/attendance" class="flex items-center justify-center bg-green-600 hover:bg-green-700 text-white py-4 px-6 rounded-xl shadow-md transform hover:scale-105 transition duration-200">
-        📋 View Attendance
-      </a>
-      <a href="/students" class="flex items-center justify-center bg-purple-600 hover:bg-purple-700 text-white py-4 px-6 rounded-xl shadow-md transform hover:scale-105 transition duration-200">
-  👥 Manage Students
-</a>
+    <section class="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <article class="rounded-[1.75rem] border border-white/70 bg-white/90 p-6 shadow-panel">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brass">Attendance</p>
+        <p class="mt-4 text-4xl font-semibold text-slate">{{ total_attendance }}</p>
+        <p class="mt-2 text-sm text-slate/65">Total recorded check-ins across staff activity.</p>
+      </article>
+      <article class="rounded-[1.75rem] border border-white/70 bg-white/90 p-6 shadow-panel">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brass">Staff</p>
+        <p class="mt-4 text-4xl font-semibold text-slate">{{ total_staff }}</p>
+        <p class="mt-2 text-sm text-slate/65">Registered staff profiles mapped to RFID cards.</p>
+      </article>
+      <article class="rounded-[1.75rem] border border-white/70 bg-slate p-6 text-white shadow-panel">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white/60">Operations</p>
+        <p class="mt-4 text-2xl font-semibold">Daily control</p>
+        <p class="mt-2 text-sm leading-6 text-slate-200">Keep the front desk process fast and consistent for staff sign-ins.</p>
+      </article>
+      <article class="rounded-[1.75rem] border border-[rgba(31,77,69,0.12)] bg-[linear-gradient(180deg,_rgba(31,77,69,0.08),_rgba(255,255,255,0.96))] p-6 shadow-panel">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-pine">Records</p>
+        <p class="mt-4 text-2xl font-semibold text-slate">Monthly exports</p>
+        <p class="mt-2 text-sm leading-6 text-slate/65">Download attendance data for internal reporting and audit use.</p>
+      </article>
+    </section>
 
-    </div>
+    <section class="mt-8 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
+      <article class="rounded-[2rem] border border-white/70 bg-white/90 p-6 shadow-panel sm:p-8">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brass">Quick Actions</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate">Administrative workflow</h2>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-4 sm:grid-cols-3">
+          <a href="/add-staff" class="group rounded-[1.5rem] border border-line bg-cloud p-5 transition hover:-translate-y-1 hover:border-brass hover:bg-white">
+            <p class="text-sm font-semibold text-slate">Register staff</p>
+            <p class="mt-2 text-sm leading-6 text-slate/65">Create a new staff profile and bind an RFID card.</p>
+            <p class="mt-4 text-sm font-semibold text-brass">Open page</p>
+          </a>
+          <a href="/staff" class="group rounded-[1.5rem] border border-line bg-cloud p-5 transition hover:-translate-y-1 hover:border-brass hover:bg-white">
+            <p class="text-sm font-semibold text-slate">Manage staff</p>
+            <p class="mt-2 text-sm leading-6 text-slate/65">Review, update, and remove staff records when needed.</p>
+            <p class="mt-4 text-sm font-semibold text-brass">Open page</p>
+          </a>
+          <a href="/attendance" class="group rounded-[1.5rem] border border-line bg-cloud p-5 transition hover:-translate-y-1 hover:border-brass hover:bg-white">
+            <p class="text-sm font-semibold text-slate">Review attendance</p>
+            <p class="mt-2 text-sm leading-6 text-slate/65">Inspect attendance history and export current monthly logs.</p>
+            <p class="mt-4 text-sm font-semibold text-brass">Open page</p>
+          </a>
+        </div>
+      </article>
+
+      <aside class="rounded-[2rem] border border-white/70 bg-white/90 p-6 shadow-panel sm:p-8">
+        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brass">System Summary</p>
+        <h2 class="mt-2 text-2xl font-semibold text-slate">Operational snapshot</h2>
+        <div class="mt-6 space-y-4">
+          <div class="rounded-[1.5rem] bg-sand p-5">
+            <p class="text-sm font-semibold text-slate">Staff registry health</p>
+            <p class="mt-2 text-sm leading-6 text-slate/70">
+              The platform is configured for staff attendance workflows and is ready for ongoing record maintenance.
+            </p>
+          </div>
+          <div class="rounded-[1.5rem] border border-line bg-cloud p-5">
+            <p class="text-sm font-semibold text-slate">Export readiness</p>
+            <p class="mt-2 text-sm leading-6 text-slate/70">
+              Monthly attendance exports remain available from the records page for reporting and reconciliation.
+            </p>
+          </div>
+        </div>
+      </aside>
+    </section>
   </div>
-</body>
-</html>
+</main>
+{% endblock %}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Smart Attendance System{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#111827',
+            slate: '#1f2937',
+            mist: '#e5e7eb',
+            line: '#d6d9df',
+            brass: '#b38b4d',
+            pine: '#1f4d45',
+            sand: '#f6f0e8',
+            cloud: '#f8fafc',
+          },
+          fontFamily: {
+            sans: ['Manrope', 'sans-serif'],
+            serif: ['Newsreader', 'serif'],
+          },
+          boxShadow: {
+            panel: '0 24px 60px rgba(15, 23, 42, 0.10)',
+          },
+        },
+      },
+    };
+  </script>
+  {% block head %}{% endblock %}
+</head>
+<body class="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(179,139,77,0.12),_transparent_28%),linear-gradient(180deg,_#f7f4ee_0%,_#eef2f6_45%,_#f8fafc_100%)] text-ink font-sans">
+  {% block body %}{% endblock %}
+</body>
+</html>
