@@ -118,10 +118,6 @@ def add_user():
         name = request.form['name']
         card_id = normalize_card_id(request.form['card_id'])
         user_type = normalize_user_type(request.form.get('user_type', default_user_type))
-        if request.path.endswith('/add-student'):
-            user_type = 'student'
-        elif request.path.endswith('/add-staff'):
-            user_type = 'staff'
         try:
             with get_db() as db:
                 db.execute(
