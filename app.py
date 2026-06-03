@@ -113,10 +113,15 @@ def dashboard():
 def add_user():
     if 'logged_in' not in session:
         return redirect(url_for('login'))
+    default_user_type = 'student' if request.path.endswith('/add-student') else 'staff'
     if request.method == 'POST':
         name = request.form['name']
         card_id = normalize_card_id(request.form['card_id'])
-        user_type = normalize_user_type(request.form.get('user_type', 'staff'))
+        user_type = normalize_user_type(request.form.get('user_type', default_user_type))
+        if request.path.endswith('/add-student'):
+            user_type = 'student'
+        elif request.path.endswith('/add-staff'):
+            user_type = 'staff'
         try:
             with get_db() as db:
                 db.execute(
@@ -128,7 +133,7 @@ def add_user():
         except sqlite3.IntegrityError:
             flash('Card ID already registered.', 'error')
             return redirect(url_for('add_user'))
-    return render_template('add_staff.html')
+    return render_template('add_staff.html', default_user_type=default_user_type)
 
 @app.route('/users')
 @app.route('/staff')
