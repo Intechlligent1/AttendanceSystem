@@ -1,22 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}Staff Directory | Smart Attendance{% endblock %}
+{% block title %}Users Directory | Smart Attendance{% endblock %}
 
 {% block body %}
 <main class="px-4 py-6 sm:px-6 lg:px-8">
   <div class="mx-auto max-w-8xl">
     <header class="mb-8 flex flex-col gap-4 rounded-[2rem] border border-white/70 bg-white/90 px-6 py-6 shadow-panel sm:flex-row sm:items-center sm:justify-between sm:px-8">
       <div>
-        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brass">Staff Directory</p>
-        <h1 class="mt-2 text-3xl font-semibold text-slate">Registered staff</h1>
-        <p class="mt-2 text-sm leading-6 text-slate/70">Maintain card assignments and keep staff identity records accurate.</p>
+        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brass">Users Directory</p>
+        <h1 class="mt-2 text-3xl font-semibold text-slate">Registered users</h1>
+        <p class="mt-2 text-sm leading-6 text-slate/70">Maintain card assignments and keep staff and student identity records accurate.</p>
       </div>
       <div class="flex flex-wrap gap-3">
-        <a href="/dashboard" class="inline-flex items-center justify-center rounded-2xl border border-line bg-cloud px-5 py-3 text-sm font-semibold text-slate transition hover:bg-white">
+        <a href="{{ url_for('dashboard') }}" class="inline-flex items-center justify-center rounded-2xl border border-line bg-cloud px-5 py-3 text-sm font-semibold text-slate transition hover:bg-white">
           Dashboard
         </a>
-        <a href="/add-staff" class="inline-flex items-center justify-center rounded-2xl bg-slate px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink">
-          Add new staff
+        <a href="{{ url_for('add_user') }}" class="inline-flex items-center justify-center rounded-2xl bg-slate px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink">
+          Add new user
         </a>
       </div>
     </header>
@@ -28,23 +28,29 @@
             <tr>
               <th class="px-6 py-4">ID</th>
               <th class="px-6 py-4">Name</th>
+              <th class="px-6 py-4">Type</th>
               <th class="px-6 py-4">Card ID</th>
               <th class="px-6 py-4">Actions</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-line text-sm text-slate">
-            {% for staff_member in staff_members %}
+            {% for user in users %}
             <tr class="transition hover:bg-sand/60">
-              <td class="px-6 py-4 font-semibold">{{ staff_member.id }}</td>
-              <td class="px-6 py-4">{{ staff_member.name }}</td>
-              <td class="px-6 py-4 font-mono text-xs tracking-[0.18em] text-slate/75">{{ staff_member.card_id }}</td>
+              <td class="px-6 py-4 font-semibold">{{ user.id }}</td>
+              <td class="px-6 py-4">{{ user.name }}</td>
+              <td class="px-6 py-4">
+                <span class="inline-flex rounded-full bg-cloud px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate">
+                  {{ user.user_type }}
+                </span>
+              </td>
+              <td class="px-6 py-4 font-mono text-xs tracking-[0.18em] text-slate/75">{{ user.card_id }}</td>
               <td class="px-6 py-4">
                 <div class="flex flex-wrap gap-2">
-                  <a href="{{ url_for('edit_staff', id=staff_member.id) }}" class="inline-flex items-center justify-center rounded-xl border border-line bg-cloud px-4 py-2 font-semibold text-slate transition hover:bg-white">
+                  <a href="{{ url_for('edit_user', id=user.id) }}" class="inline-flex items-center justify-center rounded-xl border border-line bg-cloud px-4 py-2 font-semibold text-slate transition hover:bg-white">
                     Edit
                   </a>
-                  <form action="{{ url_for('delete_staff', id=staff_member.id) }}" method="POST" class="inline">
-                    <button type="submit" onclick="return confirm('Delete this staff member?')" class="inline-flex items-center justify-center rounded-xl bg-red-600 px-4 py-2 font-semibold text-white transition hover:bg-red-700">
+                  <form action="{{ url_for('delete_user', id=user.id) }}" method="POST" class="inline">
+                    <button type="submit" onclick="return confirm('Delete this user?')" class="inline-flex items-center justify-center rounded-xl bg-red-600 px-4 py-2 font-semibold text-white transition hover:bg-red-700">
                       Delete
                     </button>
                   </form>
@@ -53,8 +59,8 @@
             </tr>
             {% else %}
             <tr>
-              <td colspan="4" class="px-6 py-12 text-center text-sm text-slate/65">
-                No staff records have been added yet.
+              <td colspan="5" class="px-6 py-12 text-center text-sm text-slate/65">
+                No user records have been added yet.
               </td>
             </tr>
             {% endfor %}

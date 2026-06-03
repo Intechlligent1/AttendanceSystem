@@ -8,11 +8,11 @@
     <header class="mb-8 flex flex-col gap-4 rounded-[2rem] border border-white/70 bg-white/90 px-6 py-6 shadow-panel sm:flex-row sm:items-center sm:justify-between sm:px-8">
       <div>
         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brass">Attendance Archive</p>
-        <h1 class="mt-2 text-3xl font-semibold text-slate">Staff attendance records</h1>
+        <h1 class="mt-2 text-3xl font-semibold text-slate">Attendance records</h1>
         <p class="mt-2 text-sm leading-6 text-slate/70">Review historical scans and export monthly attendance data for reporting.</p>
       </div>
       <div class="flex flex-wrap gap-3">
-        <a href="/dashboard" class="inline-flex items-center justify-center rounded-2xl border border-line bg-cloud px-5 py-3 text-sm font-semibold text-slate transition hover:bg-white">
+        <a href="{{ url_for('dashboard') }}" class="inline-flex items-center justify-center rounded-2xl border border-line bg-cloud px-5 py-3 text-sm font-semibold text-slate transition hover:bg-white">
           Dashboard
         </a>
       </div>
@@ -44,7 +44,8 @@
         <table class="min-w-full">
           <thead class="bg-slate text-left text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
             <tr>
-              <th class="px-6 py-4">Staff Name</th>
+              <th class="px-6 py-4">Name</th>
+              <th class="px-6 py-4">Type</th>
               <th class="px-6 py-4">Card ID</th>
               <th class="px-6 py-4">Timestamp</th>
             </tr>
@@ -53,12 +54,17 @@
             {% for log in logs %}
             <tr class="transition hover:bg-sand/60">
               <td class="px-6 py-4 font-semibold">{{ log.name }}</td>
+              <td class="px-6 py-4">
+                <span class="inline-flex rounded-full bg-cloud px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate">
+                  {{ log.user_type }}
+                </span>
+              </td>
               <td class="px-6 py-4 font-mono text-xs tracking-[0.18em] text-slate/75">{{ log.card_id }}</td>
               <td class="px-6 py-4">{{ log.timestamp }}</td>
             </tr>
             {% else %}
             <tr>
-              <td colspan="3" class="px-6 py-12 text-center text-sm text-slate/65">
+              <td colspan="4" class="px-6 py-12 text-center text-sm text-slate/65">
                 No attendance records are available for display yet.
               </td>
             </tr>

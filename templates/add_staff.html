@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}Add Staff | Smart Attendance{% endblock %}
+{% block title %}Add User | Smart Attendance{% endblock %}
 
 {% block body %}
 <main class="px-4 py-6 sm:px-6 lg:px-8">
   <div class="mx-auto max-w-6xl">
     <header class="mb-8 flex flex-col gap-4 rounded-[2rem] border border-white/70 bg-white/90 px-6 py-6 shadow-panel sm:flex-row sm:items-center sm:justify-between sm:px-8">
       <div>
-        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brass">Staff Registry</p>
-        <h1 class="mt-2 text-3xl font-semibold text-slate">Add staff profile</h1>
-        <p class="mt-2 text-sm leading-6 text-slate/70">Capture the staff member's name and map their RFID card in one step.</p>
+        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brass">User Registry</p>
+        <h1 class="mt-2 text-3xl font-semibold text-slate">Add user profile</h1>
+        <p class="mt-2 text-sm leading-6 text-slate/70">Capture the user's name, type, and RFID card in one step.</p>
       </div>
-      <a href="/dashboard" class="inline-flex items-center justify-center rounded-2xl border border-line bg-cloud px-5 py-3 text-sm font-semibold text-slate transition hover:bg-white">
+      <a href="{{ url_for('dashboard') }}" class="inline-flex items-center justify-center rounded-2xl border border-line bg-cloud px-5 py-3 text-sm font-semibold text-slate transition hover:bg-white">
         Back to dashboard
       </a>
     </header>
@@ -21,9 +21,9 @@
         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-white/60">Registration Notes</p>
         <h2 class="mt-3 font-serif text-3xl">Keep records precise from the start.</h2>
         <div class="mt-8 space-y-4 text-sm leading-7 text-slate-200">
-          <p>Use the staff member's preferred official name so exports and logs remain consistent.</p>
+          <p>Use the person's preferred official name so exports and logs remain consistent.</p>
           <p>RFID identifiers are stored in uppercase to reduce duplicates caused by formatting differences.</p>
-          <p>Each card can only be assigned to one staff profile at a time.</p>
+          <p>Each card can only be assigned to one user profile at a time.</p>
         </div>
       </aside>
 
@@ -34,7 +34,14 @@
             <div class="mt-4 grid gap-5">
               <div>
                 <label for="name" class="mb-2 block text-sm font-semibold text-slate">Full Name</label>
-                <input id="name" name="name" required placeholder="Enter staff full name" class="w-full rounded-2xl border border-line bg-cloud px-4 py-3 text-sm outline-none transition focus:border-brass focus:bg-white">
+                <input id="name" name="name" required placeholder="Enter full name" class="w-full rounded-2xl border border-line bg-cloud px-4 py-3 text-sm outline-none transition focus:border-brass focus:bg-white">
+              </div>
+              <div>
+                <label for="user_type" class="mb-2 block text-sm font-semibold text-slate">User Type</label>
+                <select id="user_type" name="user_type" required class="w-full rounded-2xl border border-line bg-cloud px-4 py-3 text-sm outline-none transition focus:border-brass focus:bg-white">
+                  <option value="staff">Staff</option>
+                  <option value="student">Student</option>
+                </select>
               </div>
               <div>
                 <label for="card_id" class="mb-2 block text-sm font-semibold text-slate">Card ID</label>
@@ -46,7 +53,7 @@
           <div class="flex flex-col gap-3 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
             <p class="text-sm text-slate/65">Fields are required. Review the RFID card carefully before saving.</p>
             <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-slate px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink">
-              Save staff profile
+              Save user profile
             </button>
           </div>
         </form>

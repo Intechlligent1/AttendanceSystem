@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
-{% block title %}Edit Staff | Smart Attendance{% endblock %}
+{% block title %}Edit User | Smart Attendance{% endblock %}
 
 {% block body %}
 <main class="px-4 py-6 sm:px-6 lg:px-8">
   <div class="mx-auto max-w-4xl">
     <header class="mb-8 flex flex-col gap-4 rounded-[2rem] border border-white/70 bg-white/90 px-6 py-6 shadow-panel sm:flex-row sm:items-center sm:justify-between sm:px-8">
       <div>
-        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brass">Staff Management</p>
-        <h1 class="mt-2 text-3xl font-semibold text-slate">Edit staff profile</h1>
+        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brass">User Management</p>
+        <h1 class="mt-2 text-3xl font-semibold text-slate">Edit user profile</h1>
         <p class="mt-2 text-sm leading-6 text-slate/70">Update record details without changing the overall workflow.</p>
       </div>
-      <a href="{{ url_for('staff') }}" class="inline-flex items-center justify-center rounded-2xl border border-line bg-cloud px-5 py-3 text-sm font-semibold text-slate transition hover:bg-white">
-        Back to staff list
+      <a href="{{ url_for('users') }}" class="inline-flex items-center justify-center rounded-2xl border border-line bg-cloud px-5 py-3 text-sm font-semibold text-slate transition hover:bg-white">
+        Back to user list
       </a>
     </header>
 
@@ -21,17 +21,25 @@
         <div class="grid gap-5">
           <div>
             <label for="name" class="mb-2 block text-sm font-semibold text-slate">Full Name</label>
-            <input id="name" type="text" name="name" value="{{ staff_member.name }}" required class="w-full rounded-2xl border border-line bg-cloud px-4 py-3 text-sm outline-none transition focus:border-brass focus:bg-white">
+            <input id="name" type="text" name="name" value="{{ user.name }}" required class="w-full rounded-2xl border border-line bg-cloud px-4 py-3 text-sm outline-none transition focus:border-brass focus:bg-white">
+          </div>
+
+          <div>
+            <label for="user_type" class="mb-2 block text-sm font-semibold text-slate">User Type</label>
+            <select id="user_type" name="user_type" required class="w-full rounded-2xl border border-line bg-cloud px-4 py-3 text-sm outline-none transition focus:border-brass focus:bg-white">
+              <option value="staff" {% if user.user_type == 'staff' %}selected{% endif %}>Staff</option>
+              <option value="student" {% if user.user_type == 'student' %}selected{% endif %}>Student</option>
+            </select>
           </div>
 
           <div>
             <label for="card_id" class="mb-2 block text-sm font-semibold text-slate">Card ID</label>
-            <input id="card_id" type="text" name="card_id" value="{{ staff_member.card_id }}" required class="w-full rounded-2xl border border-line bg-cloud px-4 py-3 text-sm uppercase outline-none transition focus:border-brass focus:bg-white">
+            <input id="card_id" type="text" name="card_id" value="{{ user.card_id }}" required class="w-full rounded-2xl border border-line bg-cloud px-4 py-3 text-sm uppercase outline-none transition focus:border-brass focus:bg-white">
           </div>
         </div>
 
         <div class="flex flex-col gap-3 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p class="text-sm text-slate/65">Changing a card ID affects future attendance scans for this staff member.</p>
+          <p class="text-sm text-slate/65">Changing a card ID affects future attendance scans for this user.</p>
           <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-slate px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink">
             Save changes
           </button>

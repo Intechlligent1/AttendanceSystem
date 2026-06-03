@@ -12,21 +12,21 @@
             <img src="/static/kpt.png" alt="Kaduna Polytechnic Logo" class="h-14 w-14 rounded-2xl bg-sand p-2 shadow-sm" />
             <div>
               <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brass">Kaduna Polytechnic</p>
-              <h1 class="mt-1 text-3xl font-semibold text-slate sm:text-4xl">Staff Attendance Dashboard</h1>
+              <h1 class="mt-1 text-3xl font-semibold text-slate sm:text-4xl">User Attendance Dashboard</h1>
             </div>
           </div>
           <p class="max-w-2xl text-sm leading-7 text-slate/70 sm:text-base">
-            Review staffing activity, register new personnel, and keep attendance records organized through a cleaner administrative surface.
+            Review staff and student activity, register new users, and keep attendance records organized through a cleaner administrative surface.
           </p>
         </div>
         <div class="flex flex-wrap gap-3">
-          <a href="/add-staff" class="inline-flex items-center justify-center rounded-2xl bg-slate px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink">
-            Add Staff
+          <a href="{{ url_for('add_user') }}" class="inline-flex items-center justify-center rounded-2xl bg-slate px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink">
+            Add User
           </a>
-          <a href="/attendance" class="inline-flex items-center justify-center rounded-2xl border border-line bg-white px-5 py-3 text-sm font-semibold text-slate transition hover:border-brass hover:text-ink">
+          <a href="{{ url_for('view_attendance') }}" class="inline-flex items-center justify-center rounded-2xl border border-line bg-white px-5 py-3 text-sm font-semibold text-slate transition hover:border-brass hover:text-ink">
             Attendance Log
           </a>
-          <a href="/logout" class="inline-flex items-center justify-center rounded-2xl border border-line bg-cloud px-5 py-3 text-sm font-semibold text-slate transition hover:bg-white">
+          <a href="{{ url_for('logout') }}" class="inline-flex items-center justify-center rounded-2xl border border-line bg-cloud px-5 py-3 text-sm font-semibold text-slate transition hover:bg-white">
             Log Out
           </a>
         </div>
@@ -37,22 +37,22 @@
       <article class="rounded-[1.75rem] border border-white/70 bg-white/90 p-6 shadow-panel">
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brass">Attendance</p>
         <p class="mt-4 text-4xl font-semibold text-slate">{{ total_attendance }}</p>
-        <p class="mt-2 text-sm text-slate/65">Total recorded check-ins across staff activity.</p>
+        <p class="mt-2 text-sm text-slate/65">Total recorded check-ins across staff and student activity.</p>
+      </article>
+      <article class="rounded-[1.75rem] border border-white/70 bg-white/90 p-6 shadow-panel">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brass">Users</p>
+        <p class="mt-4 text-4xl font-semibold text-slate">{{ total_users }}</p>
+        <p class="mt-2 text-sm text-slate/65">All registered card holders in the system.</p>
       </article>
       <article class="rounded-[1.75rem] border border-white/70 bg-white/90 p-6 shadow-panel">
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brass">Staff</p>
         <p class="mt-4 text-4xl font-semibold text-slate">{{ total_staff }}</p>
         <p class="mt-2 text-sm text-slate/65">Registered staff profiles mapped to RFID cards.</p>
       </article>
-      <article class="rounded-[1.75rem] border border-white/70 bg-slate p-6 text-white shadow-panel">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white/60">Operations</p>
-        <p class="mt-4 text-2xl font-semibold">Daily control</p>
-        <p class="mt-2 text-sm leading-6 text-slate-200">Keep the front desk process fast and consistent for staff sign-ins.</p>
-      </article>
       <article class="rounded-[1.75rem] border border-[rgba(31,77,69,0.12)] bg-[linear-gradient(180deg,_rgba(31,77,69,0.08),_rgba(255,255,255,0.96))] p-6 shadow-panel">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-pine">Records</p>
-        <p class="mt-4 text-2xl font-semibold text-slate">Monthly exports</p>
-        <p class="mt-2 text-sm leading-6 text-slate/65">Download attendance data for internal reporting and audit use.</p>
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-pine">Students</p>
+        <p class="mt-4 text-4xl font-semibold text-slate">{{ total_students }}</p>
+        <p class="mt-2 text-sm leading-6 text-slate/65">Registered student profiles mapped to RFID cards.</p>
       </article>
     </section>
 
@@ -65,17 +65,17 @@
           </div>
         </div>
         <div class="mt-6 grid gap-4 sm:grid-cols-3">
-          <a href="/add-staff" class="group rounded-[1.5rem] border border-line bg-cloud p-5 transition hover:-translate-y-1 hover:border-brass hover:bg-white">
-            <p class="text-sm font-semibold text-slate">Register staff</p>
-            <p class="mt-2 text-sm leading-6 text-slate/65">Create a new staff profile and bind an RFID card.</p>
+          <a href="{{ url_for('add_user') }}" class="group rounded-[1.5rem] border border-line bg-cloud p-5 transition hover:-translate-y-1 hover:border-brass hover:bg-white">
+            <p class="text-sm font-semibold text-slate">Register user</p>
+            <p class="mt-2 text-sm leading-6 text-slate/65">Create a new staff or student profile and bind an RFID card.</p>
             <p class="mt-4 text-sm font-semibold text-brass">Open page</p>
           </a>
-          <a href="/staff" class="group rounded-[1.5rem] border border-line bg-cloud p-5 transition hover:-translate-y-1 hover:border-brass hover:bg-white">
-            <p class="text-sm font-semibold text-slate">Manage staff</p>
-            <p class="mt-2 text-sm leading-6 text-slate/65">Review, update, and remove staff records when needed.</p>
+          <a href="{{ url_for('users') }}" class="group rounded-[1.5rem] border border-line bg-cloud p-5 transition hover:-translate-y-1 hover:border-brass hover:bg-white">
+            <p class="text-sm font-semibold text-slate">Manage users</p>
+            <p class="mt-2 text-sm leading-6 text-slate/65">Review, update, and remove staff or student records when needed.</p>
             <p class="mt-4 text-sm font-semibold text-brass">Open page</p>
           </a>
-          <a href="/attendance" class="group rounded-[1.5rem] border border-line bg-cloud p-5 transition hover:-translate-y-1 hover:border-brass hover:bg-white">
+          <a href="{{ url_for('view_attendance') }}" class="group rounded-[1.5rem] border border-line bg-cloud p-5 transition hover:-translate-y-1 hover:border-brass hover:bg-white">
             <p class="text-sm font-semibold text-slate">Review attendance</p>
             <p class="mt-2 text-sm leading-6 text-slate/65">Inspect attendance history and export current monthly logs.</p>
             <p class="mt-4 text-sm font-semibold text-brass">Open page</p>
@@ -88,9 +88,9 @@
         <h2 class="mt-2 text-2xl font-semibold text-slate">Operational snapshot</h2>
         <div class="mt-6 space-y-4">
           <div class="rounded-[1.5rem] bg-sand p-5">
-            <p class="text-sm font-semibold text-slate">Staff registry health</p>
+            <p class="text-sm font-semibold text-slate">User registry health</p>
             <p class="mt-2 text-sm leading-6 text-slate/70">
-              The platform is configured for staff attendance workflows and is ready for ongoing record maintenance.
+              The platform is configured for staff and student attendance workflows and is ready for ongoing record maintenance.
             </p>
           </div>
           <div class="rounded-[1.5rem] border border-line bg-cloud p-5">
