@@ -205,16 +205,29 @@ def view_attendance():
     if 'logged_in' not in session:
         return redirect(url_for('login'))
     db = get_db()
-    logs = db.execute("""
+    staff_logs = db.execute("""
         SELECT a.timestamp, u.name, u.card_id, u.user_type
-        FROM attendance a 
+        FROM attendance a
         JOIN users u ON a.user_id = u.id
+        WHERE u.user_type = 'staff'
         ORDER BY a.timestamp DESC
     """).fetchall()
+    student_logs = db.execute("""
+        SELECT a.timestamp, u.name, u.card_id, u.user_type
+        FROM attendance a
+        JOIN users u ON a.user_id = u.id
+        WHERE u.user_type = 'student'
+        ORDER BY a.timestamp DESC
+    """).fetchall()
+    staff_count = len(staff_logs)
+    student_count = len(student_logs)
     now = datetime.utcnow()
     return render_template(
         'attendance.html',
-        logs=logs,
+        staff_logs=staff_logs,
+        student_logs=student_logs,
+        staff_count=staff_count,
+        student_count=student_count,
         current_month=now.strftime('%m'),
         current_year=now.strftime('%Y'),
     )
@@ -289,4 +302,3 @@ def logout():
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
-
